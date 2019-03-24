@@ -2,11 +2,14 @@
 # OAuth Access Token: xoxp-587165755527-586060408980-586425283173-c3c10acfcfd7a01e1b663846878d4950
 from slackclient import SlackClient
 import time
+import json
+
+data = json.load(open("answers.json"))
 
 class SlackConnections(object):
     def __init__(self):
-        self.slack_client = SlackClient('xoxb-587165755527-577379837633-PHLxf4vaF7g8X6fu43jAwRs3')
-        self.appname="infi_assist"
+        self.slack_client = SlackClient('xoxb-587165755527-577379837633-rqVlxTzs6i5dJ2AWBjyc21t5')
+        self.appname="infis_assistant"
 
     def slackConnect(self):
         return self.slack_client.rtm_connect()
@@ -22,7 +25,10 @@ class SlackConnections(object):
                 user = input["user"]
                 message = input["text"].split(bot)[1].strip(' ')
                 channel = input["channel"]
-                return [str(user), str(message), str(channel)]
+                if message in data:
+                    return [str(user), str(data[message]), str(channel)]
+                else:
+                    return [str(user), "can't understand Sorry", str(channel)]
             else:
                 return [None, None, None]
 
